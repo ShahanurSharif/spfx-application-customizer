@@ -2,17 +2,17 @@
   "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
   "version": "2.0",
   "bundles": {
-    "first-ac-application-customizer": {
+    "fc-customizer-field-customizer": {
       "components": [
         {
-          "entrypoint": "./lib/extensions/firstAc/FirstAcApplicationCustomizer.js",
-          "manifest": "./src/extensions/firstAc/FirstAcApplicationCustomizer.manifest.json"
+          "entrypoint": "./lib/extensions/fcCustomizer/FcCustomizerFieldCustomizer.js",
+          "manifest": "./src/extensions/fcCustomizer/FcCustomizerFieldCustomizer.manifest.json"
         }
       ]
     }
   },
   "externals": {},
   "localizedResources": {
-    "FirstAcApplicationCustomizerStrings": "lib/extensions/firstAc/loc/{locale}.js"
+    "FcCustomizerFieldCustomizerStrings": "lib/extensions/fcCustomizer/loc/{locale}.js"
   }
 }

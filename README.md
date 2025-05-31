@@ -2,7 +2,9 @@
 
 ## Summary
 
-A SharePoint Framework (SPFx) Application Customizer extension using React. This extension demonstrates a basic setup and can be used as a starting point for custom SharePoint solutions.
+Short summary on functionality and used technologies.
+
+[picture of the solution in action, if possible]
 
 ## Used SharePoint Framework Version
 
@@ -17,22 +19,20 @@ A SharePoint Framework (SPFx) Application Customizer extension using React. This
 
 ## Prerequisites
 
-- Node.js v22.14.0 or later (but less than v23)
-- Gulp CLI (`npm install -g gulp-cli`)
-- Yeoman (`npm install -g yo`)
-- SPFx Generator (`npm install -g @microsoft/generator-sharepoint`)
+> Any special pre-requisites?
 
 ## Solution
 
-| Solution    | Author(s) |
-| ----------- | --------- |
-| spfx-extension | Your Name |
+| Solution    | Author(s)                                               |
+| ----------- | ------------------------------------------------------- |
+| folder name | Author details (name, company, twitter alias with link) |
 
 ## Version history
 
-| Version | Date       | Comments        |
-| ------- | ---------- | --------------- |
-| 0.0.1   | May 30, 2025 | Initial release |
+| Version | Date             | Comments        |
+| ------- | ---------------- | --------------- |
+| 1.1     | March 10, 2021   | Update comment  |
+| 1.0     | January 29, 2021 | Initial release |
 
 ## Disclaimer
 
@@ -42,21 +42,32 @@ A SharePoint Framework (SPFx) Application Customizer extension using React. This
 
 ## Minimal Path to Awesome
 
-1. Clone this repository or download the source code.
-2. Open a terminal in the solution folder.
-3. Run:
-   ```zsh
-   npm install
-   gulp serve
-   ```
+- Clone this repository
+- Ensure that you are at the solution folder
+- in the command-line run:
+  - **npm install**
+  - **gulp serve**
 
-## Debugging and Building
+> Include any additional steps as needed.
 
-- To build the extension: `gulp build`
-- To serve locally: `gulp serve`
-- To clean the solution: `gulp clean`
+## Features
 
-## Additional Resources
+Description of the extension that expands upon high-level summary above.
 
-- [SPFx Documentation](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/overview-sharepoint-framework)
-- [React Documentation](https://react.dev/)
+This extension illustrates the following concepts:
+
+- topic 1
+- topic 2
+- topic 3
+
+> Notice that better pictures and documentation will increase the sample usage and the value you are providing for others. Thanks for your submissions advance.
+
+> Share your web part with others through Microsoft 365 Patterns and Practices program to get visibility and exposure. More details on the community, open-source projects and other activities from http://aka.ms/m365pnp.
+
+## References
+
+- [Getting started with SharePoint Framework](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/set-up-your-developer-tenant)
+- [Building for Microsoft teams](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/build-for-teams-overview)
+- [Use Microsoft Graph in your solution](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/web-parts/get-started/using-microsoft-graph-apis)
+- [Publish SharePoint Framework applications to the Marketplace](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/publish-to-marketplace-overview)
+- [Microsoft 365 Patterns and Practices](https://aka.ms/m365pnp) - Guidance, tooling, samples and open-source controls for your Microsoft 365 development

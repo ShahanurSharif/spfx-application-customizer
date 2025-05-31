@@ -4,23 +4,23 @@
   "https": true,
   "serveConfigurations": {
     "default": {
-      "pageUrl": "https://monarch360demo.sharepoint.com/sites/shan/SitePages/Home.aspx",
-      "customActions": {
-        "7ce02ecd-1d80-4389-84b0-ce71b5a0557f": {
-          "location": "ClientSideExtension.ApplicationCustomizer",
+      "pageUrl": "https://{tenantDomain}/SitePages/myPage.aspx",
+      "fieldCustomizers": {
+        "InternalFieldName": {
+          "id": "d18f5c97-0187-4193-9f3f-e05480850af7",
           "properties": {
-            "testMessage": "Test message"
+            "sampleText": "Value"
           }
         }
       }
     },
-    "firstAc": {
-      "pageUrl": "https://monarch360demo.sharepoint.com/sites/shan/SitePages/Home.aspx",
-      "customActions": {
-        "7ce02ecd-1d80-4389-84b0-ce71b5a0557f": {
-          "location": "ClientSideExtension.ApplicationCustomizer",
+    "fcCustomizer": {
+      "pageUrl": "https://{tenantDomain}/SitePages/myPage.aspx",
+      "fieldCustomizers": {
+        "InternalFieldName": {
+          "id": "d18f5c97-0187-4193-9f3f-e05480850af7",
           "properties": {
-            "testMessage": "Test message"
+            "sampleText": "Value"
           }
         }
       }

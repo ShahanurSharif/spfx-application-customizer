@@ -6,7 +6,7 @@
     "sdksVersions": {},
     "version": "1.21.1",
     "libraryName": "spfx-extension",
-    "libraryId": "90499884-5fc2-4a18-8a66-4d5c5a100c4b",
+    "libraryId": "3cadd51f-8c7e-4548-9d13-28e7b6241a8f",
     "environment": "spo",
     "packageManager": "npm",
     "solutionName": "spfx-extension",
@@ -14,6 +14,6 @@
     "skipFeatureDeployment": true,
     "isDomainIsolated": false,
     "componentType": "extension",
-    "extensionType": "ApplicationCustomizer"
+    "extensionType": "FieldCustomizer"
   }
 }

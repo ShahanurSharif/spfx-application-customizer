@@ -1,10 +1,10 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-extension-manifest.schema.json",
 
-  "id": "7ce02ecd-1d80-4389-84b0-ce71b5a0557f",
-  "alias": "FirstAcApplicationCustomizer",
+  "id": "d18f5c97-0187-4193-9f3f-e05480850af7",
+  "alias": "FcCustomizerFieldCustomizer",
   "componentType": "Extension",
-  "extensionType": "ApplicationCustomizer",
+  "extensionType": "FieldCustomizer",
 
   // The "*" signifies that the version should be taken from the package.json
   "version": "*",

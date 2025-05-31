@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Elements xmlns="http://schemas.microsoft.com/sharepoint/">
-    <CustomAction
-        Title="FirstAc"
-        Location="ClientSideExtension.ApplicationCustomizer"
-        ClientSideComponentId="7ce02ecd-1d80-4389-84b0-ce71b5a0557f"
-        ClientSideComponentProperties="{&quot;testMessage&quot;:&quot;Test message&quot;}">
-    </CustomAction>
+    <Field ID="{3c8df5f9-6233-48bd-b322-ec19c0fd63c0}"
+            Name="SPFxPercentage"
+            DisplayName="Percentage"
+            Type="Number"
+            Min="0"
+            Required="FALSE"
+            Group="SPFx Columns"
+            ClientSideComponentId="d18f5c97-0187-4193-9f3f-e05480850af7">
+    </Field>
 </Elements>
