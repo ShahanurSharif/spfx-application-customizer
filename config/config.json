@@ -2,17 +2,17 @@
   "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
   "version": "2.0",
   "bundles": {
-    "fc-customizer-field-customizer": {
+    "hello-world-application-customizer": {
       "components": [
         {
-          "entrypoint": "./lib/extensions/fcCustomizer/FcCustomizerFieldCustomizer.js",
-          "manifest": "./src/extensions/fcCustomizer/FcCustomizerFieldCustomizer.manifest.json"
+          "entrypoint": "./lib/extensions/helloWorld/HelloWorldApplicationCustomizer.js",
+          "manifest": "./src/extensions/helloWorld/HelloWorldApplicationCustomizer.manifest.json"
         }
       ]
     }
   },
   "externals": {},
   "localizedResources": {
-    "FcCustomizerFieldCustomizerStrings": "lib/extensions/fcCustomizer/loc/{locale}.js"
+    "HelloWorldApplicationCustomizerStrings": "lib/extensions/helloWorld/loc/{locale}.js"
   }
 }

@@ -4,23 +4,12 @@
   "https": true,
   "serveConfigurations": {
     "default": {
-      "pageUrl": "https://{tenantDomain}/SitePages/myPage.aspx",
-      "fieldCustomizers": {
-        "InternalFieldName": {
-          "id": "d18f5c97-0187-4193-9f3f-e05480850af7",
+      "pageUrl": "https://monarch360demo.sharepoint.com/sites/shan/SitePages/home.aspx",
+      "customActions": {
+        "1b0091ce-b8a6-4268-8f2a-f3362b54ed22": {
+          "location": "ClientSideExtension.ApplicationCustomizer",
           "properties": {
-            "sampleText": "Value"
-          }
-        }
-      }
-    },
-    "fcCustomizer": {
-      "pageUrl": "https://{tenantDomain}/SitePages/myPage.aspx",
-      "fieldCustomizers": {
-        "InternalFieldName": {
-          "id": "d18f5c97-0187-4193-9f3f-e05480850af7",
-          "properties": {
-            "sampleText": "Value"
+            "testMessage": "Test message"
           }
         }
       }
