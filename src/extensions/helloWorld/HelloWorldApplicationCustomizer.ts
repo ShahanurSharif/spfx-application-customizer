@@ -51,17 +51,17 @@ private bottom(): void {
       setTimeout(() => {
         const navBar = document.querySelector('.ms-HorizontalNavItems-list');
         if (navBar) {
-          var children = navBar.children;
-          var homeItem: HTMLElement | null = null;
-          for (var i = 0; i < children.length; i++) {
-            var el = children[i] as HTMLElement;
+          const children = navBar.children;
+          let homeItem: HTMLElement | undefined = undefined;
+          for (let i = 0; i < children.length; i++) {
+            const el = children[i] as HTMLElement;
             if (el.textContent && el.textContent.trim() === 'Pages') {
               homeItem = el;
               break;
             }
           }
           if (homeItem) {
-            var iconButton = document.createElement('button');
+            const iconButton = document.createElement('button');
             iconButton.title = 'Custom Action';
             iconButton.style.background = 'none';
             iconButton.style.border = 'none';
