@@ -2,17 +2,17 @@
   "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
   "version": "2.0",
   "bundles": {
-    "hello-world-application-customizer": {
+    "monarch-360-nav-crud-application-customizer": {
       "components": [
         {
-          "entrypoint": "./lib/extensions/helloWorld/HelloWorldApplicationCustomizer.js",
-          "manifest": "./src/extensions/helloWorld/HelloWorldApplicationCustomizer.manifest.json"
+          "entrypoint": "./lib/extensions/monarch360NavCrud/Monarch360NavCrudApplicationCustomizer.js",
+          "manifest": "./src/extensions/monarch360NavCrud/Monarch360NavCrudApplicationCustomizer.manifest.json"
         }
       ]
     }
   },
   "externals": {},
   "localizedResources": {
-    "HelloWorldApplicationCustomizerStrings": "lib/extensions/helloWorld/loc/{locale}.js"
+    "Monarch360NavCrudApplicationCustomizerStrings": "lib/extensions/monarch360NavCrud/loc/{locale}.js"
   }
 }
