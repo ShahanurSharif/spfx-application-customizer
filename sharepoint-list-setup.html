@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SharePoint List Quick Setup</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 20px; 
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .method {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #fafafa;
+        }
+        .method h3 {
+            margin-top: 0;
+            color: #0078d4;
+        }
+        .code-block {
+            background: #2d2d30;
+            color: #cccccc;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+        }
+        .url-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .button {
+            background: #0078d4;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .button:hover {
+            background: #106ebe;
+        }
+        .warning {
+            background: #fff4ce;
+            border: 1px solid #ffb900;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+        .success {
+            background: #dff6dd;
+            border: 1px solid #107c10;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 SharePoint List Setup for Monarch360 Extension</h1>
+        
+        <div class="warning">
+            <strong>⚠️ Current Issue:</strong> The SharePoint list "navbarcrud" doesn't exist on your site.<br>
+            You need to create this list before the extension can work properly.
+        </div>
+
+        <div class="method">
+            <h3>Method 1: PowerShell Script (Recommended)</h3>
+            <p>Use the provided PowerShell script for automatic setup:</p>
+            <div class="code-block">
+# Install PnP PowerShell if not already installed
+Install-Module -Name PnP.PowerShell -Scope CurrentUser
+
+# Run the setup script
+.\setup-sharepoint-list.ps1 -SiteUrl "https://monarch360demo.sharepoint.com/sites/shan"
+            </div>
+        </div>
+
+        <div class="method">
+            <h3>Method 2: Manual SharePoint List Creation</h3>
+            <ol>
+                <li>Go to your SharePoint site: <strong>https://monarch360demo.sharepoint.com/sites/shan</strong></li>
+                <li>Click <strong>Settings (gear icon) → Site Contents</strong></li>
+                <li>Click <strong>+ New → List</strong></li>
+                <li>Choose <strong>"Blank list"</strong></li>
+                <li>Name: <strong>navbarcrud</strong></li>
+                <li>Click <strong>Create</strong></li>
+                <li>Add a new column called <strong>"value"</strong> (Single line of text)</li>
+                <li>Add these two items:
+                    <ul>
+                        <li>Title: <strong>background_color</strong>, value: <strong>#0078d4</strong></li>
+                        <li>Title: <strong>font_size</strong>, value: <strong>16</strong></li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <div class="method">
+            <h3>Method 3: Browser Console Quick Setup</h3>
+            <p>If you have site admin permissions, you can run this in your browser console on the SharePoint site:</p>
+            <div class="code-block">
+// Quick setup script for browser console
+// Navigate to your SharePoint site first, then run this in F12 console
+
+async function createNavBarCrudList() {
+    try {
+        const siteUrl = window.location.origin + _spPageContextInfo.webServerRelativeUrl;
+        console.log('Setting up navbarcrud list...');
+        
+        // This is a simplified version - actual implementation would need proper REST API calls
+        alert('Please use Method 1 (PowerShell) or Method 2 (Manual) for list creation.');
+        
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Please use Method 1 (PowerShell) or Method 2 (Manual) for list creation.');
+    }
+}
+
+// Run the function
+createNavBarCrudList();
+            </div>
+        </div>
+
+        <div class="method">
+            <h3>Method 4: REST API (Advanced Users)</h3>
+            <p>Create the list using SharePoint REST API:</p>
+            <div class="code-block">
+# Create list
+POST https://monarch360demo.sharepoint.com/sites/shan/_api/web/lists
+Content-Type: application/json
+{
+  "Title": "navbarcrud",
+  "BaseTemplate": 100
+}
+
+# Add 'value' field  
+POST https://monarch360demo.sharepoint.com/sites/shan/_api/web/lists/getbytitle('navbarcrud')/fields
+Content-Type: application/json
+{
+  "FieldTypeKind": 2,
+  "Title": "value"
+}
+
+# Add items
+POST https://monarch360demo.sharepoint.com/sites/shan/_api/web/lists/getbytitle('navbarcrud')/items
+Content-Type: application/json
+{
+  "Title": "background_color",
+  "value": "#0078d4"
+}
+            </div>
+        </div>
+
+        <div class="success">
+            <h3>✅ After List Creation</h3>
+            <p>Once you've created the list, refresh your SPFx extension and you should see:</p>
+            <ul>
+                <li>No more console errors about missing list</li>
+                <li>Settings button appears in the SharePoint header</li>
+                <li>Dialog opens and loads/saves settings properly</li>
+            </ul>
+        </div>
+
+        <div class="method">
+            <h3>🔧 Verify Your Setup</h3>
+            <p>After creating the list, test it by running this in your browser console on the SharePoint site:</p>
+            <div class="code-block">
+// Verify the list exists and has the correct structure
+fetch(`${_spPageContextInfo.webAbsoluteUrl}/_api/web/lists/getbytitle('navbarcrud')/items`)
+    .then(response => response.json())
+    .then(data => {
+        console.log('✅ List found with items:', data.value);
+        data.value.forEach(item => {
+            console.log(`- ${item.Title}: ${item.value}`);
+        });
+    })
+    .catch(error => {
+        console.error('❌ List verification failed:', error);
+    });
+            </div>
+        </div>
+    </div>
+</body>
+</html>

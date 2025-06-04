@@ -1,10 +1,16 @@
-# spfx-extension
+# Monarch 360 NavBar CRUD - SPFx Application Customizer
 
 ## Summary
 
-Short summary on functionality and used technologies.
+This SharePoint Framework (SPFx) application customizer adds a settings gear icon to the left of the site logo in SharePoint. When clicked, it opens a dialog that allows users to change the background color and font size of the SharePoint "ShyHeader" element. Settings are stored in and retrieved from a SharePoint list named `navbarcrud`.
 
-[picture of the solution in action, if possible]
+## Features
+
+- **Visual Settings Control**: Intuitive UI for customizing SharePoint header appearance
+- **Real-time Preview**: Changes apply immediately to the ShyHeader element
+- **SharePoint List Integration**: Uses PnPjs to store settings in SharePoint instead of localStorage
+- **Modern UI**: Built with Fluent UI React components for consistent SharePoint look and feel
+- **Error Handling**: Graceful error handling with user notifications
 
 ## Used SharePoint Framework Version
 
@@ -19,20 +25,31 @@ Short summary on functionality and used technologies.
 
 ## Prerequisites
 
-> Any special pre-requisites?
+### SharePoint List Setup
+Before deploying the solution, you need to create a SharePoint list named `navbarcrud` with the following structure:
+
+- **List Name**: `navbarcrud`
+- **Columns**: 
+  - `Title` (Single line of text) - Default column
+  - `value` (Single line of text) - Custom column to add
+
+**Required List Items**:
+- Item 1: Title = "background_color", value = "#0078d4"
+- Item 2: Title = "font_size", value = "16"
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed setup instructions.
 
 ## Solution
 
 | Solution    | Author(s)                                               |
 | ----------- | ------------------------------------------------------- |
-| folder name | Author details (name, company, twitter alias with link) |
+| spfx-extension | Monarch 360 Development Team |
 
 ## Version history
 
 | Version | Date             | Comments        |
 | ------- | ---------------- | --------------- |
-| 1.1     | March 10, 2021   | Update comment  |
-| 1.0     | January 29, 2021 | Initial release |
+| 1.0     | June 5, 2025   | Initial release with SharePoint list integration |
 
 ## Disclaimer
 

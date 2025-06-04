@@ -20,6 +20,15 @@ import {
   IStackTokens
 } from '@fluentui/react';
 
+// Import PnP JS libraries
+import { spfi, SPFx } from '@pnp/sp';
+import '@pnp/sp/webs';
+import '@pnp/sp/lists';
+import '@pnp/sp/items';
+
+// Context for SharePoint operations
+import { ApplicationCustomizerContext } from '@microsoft/sp-application-base';
+
 /**
  * Settings Interface
  */
@@ -33,6 +42,7 @@ export interface IUserSettings {
  */
 export interface ISettingsDialogProps {
   onDismiss: () => void;
+  context?: ApplicationCustomizerContext; // SharePoint context
 }
 
 /**
@@ -78,42 +88,10 @@ export class SettingsDialogContent extends React.Component<ISettingsDialogProps,
    * Component Did Mount - Load settings
    */
   public componentDidMount(): void {
-    this.loadSettings();
-  }
-  
-  /**
-   * Load settings from localStorage (in a real implementation, this would use SPFx PnPjs or Graph API)
-   */
-  private loadSettings = (): void => {
-    setTimeout(() => {
+    // Use a self-invoking async function to handle the promise
+    (async () => {
       try {
-        const savedSettings = localStorage.getItem('monarch360Settings');
-        
-        if (savedSettings) {
-          const settings = JSON.parse(savedSettings) as IUserSettings;
-          this.setState({
-            color: settings.backgroundColor || '#0078d4',
-            fontSize: settings.fontSize || 16,
-            isLoading: false,
-            notification: {
-              message: 'Settings loaded successfully',
-              type: MessageBarType.success,
-              show: true
-            }
-          });
-          
-          // Hide notification after 3 seconds
-          setTimeout(() => {
-            this.setState({ 
-              notification: { 
-                ...this.state.notification,
-                show: false 
-              } 
-            });
-          }, 3000);
-        } else {
-          this.setState({ isLoading: false });
-        }
+        await this.loadSettings();
       } catch (error) {
         console.error('Error loading settings:', error);
         this.setState({ 
@@ -125,24 +103,150 @@ export class SettingsDialogContent extends React.Component<ISettingsDialogProps,
           }
         });
       }
-    }, 1000); // Simulate loading delay
+    })().catch((error) => {
+      console.error('Error in componentDidMount:', error);
+      this.setState({ 
+        isLoading: false,
+        notification: {
+          message: 'Error loading settings',
+          type: MessageBarType.error,
+          show: true
+        }
+      });
+    });
   }
   
   /**
-   * Save settings to localStorage (in a real implementation, this would use SPFx PnPjs or Graph API)
+   * Load settings from SharePoint list
    */
-  private saveSettings = (settings: IUserSettings): Promise<void> => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        try {
-          localStorage.setItem('monarch360Settings', JSON.stringify(settings));
-          resolve();
-        } catch (error) {
-          console.error('Error saving settings:', error);
-          reject(error);
+  private loadSettings = async (): Promise<void> => {
+    try {
+      if (!this.props.context) {
+        console.error('SharePoint context not available');
+        this.setState({ isLoading: false });
+        return;
+      }
+      
+      // Initialize SP
+      const sp = spfi().using(SPFx(this.props.context));
+      
+      // Get background color from list
+      const bgColorItems = await sp.web.lists.getByTitle("navbarcrud").items
+        .filter("Title eq 'background_color'")
+        .top(1)();
+        
+      // Get font size from list
+      const fontSizeItems = await sp.web.lists.getByTitle("navbarcrud").items
+        .filter("Title eq 'font_size'")
+        .top(1)();
+        
+      // Default values
+      let backgroundColor = '#0078d4';
+      let fontSize = 16;
+      
+      // If items exist, use those values
+      if (bgColorItems.length > 0) {
+        backgroundColor = bgColorItems[0].value || backgroundColor;
+      }
+      
+      if (fontSizeItems.length > 0) {
+        fontSize = parseInt(fontSizeItems[0].value, 10) || fontSize;
+      }
+      
+      this.setState({
+        color: backgroundColor,
+        fontSize: fontSize,
+        isLoading: false,
+        notification: {
+          message: 'Settings loaded successfully from SharePoint list',
+          type: MessageBarType.success,
+          show: true
         }
-      }, 1000); // Simulate save delay
-    });
+      });
+      
+      // Hide notification after 3 seconds
+      setTimeout(() => {
+        this.setState({ 
+          notification: { 
+            ...this.state.notification,
+            show: false 
+          } 
+        });
+      }, 3000);
+      
+    } catch (error) {
+      console.error('Error loading settings from SharePoint list:', error);
+      this.setState({ 
+        isLoading: false,
+        notification: {
+          message: 'Error loading settings from SharePoint',
+          type: MessageBarType.error,
+          show: true
+        }
+      });
+    }
+  }
+  
+  /**
+   * Save settings to SharePoint list
+   */
+  private saveSettings = async (settings: IUserSettings): Promise<void> => {
+    try {
+      if (!this.props.context) {
+        console.error('SharePoint context not available');
+        throw new Error('SharePoint context not available');
+      }
+      
+      // Initialize SP
+      const sp = spfi().using(SPFx(this.props.context));
+      
+      // Check if the background_color item exists
+      const bgColorItems = await sp.web.lists.getByTitle("navbarcrud").items
+        .filter("Title eq 'background_color'")
+        .top(1)();
+        
+      if (bgColorItems.length > 0) {
+        // Update the existing item
+        await sp.web.lists.getByTitle("navbarcrud").items
+          .getById(bgColorItems[0].Id)
+          .update({
+            value: settings.backgroundColor
+          });
+      } else {
+        // Create a new item
+        await sp.web.lists.getByTitle("navbarcrud").items
+          .add({
+            Title: 'background_color',
+            value: settings.backgroundColor
+          });
+      }
+      
+      // Check if the font_size item exists
+      const fontSizeItems = await sp.web.lists.getByTitle("navbarcrud").items
+        .filter("Title eq 'font_size'")
+        .top(1)();
+        
+      if (fontSizeItems.length > 0) {
+        // Update the existing item
+        await sp.web.lists.getByTitle("navbarcrud").items
+          .getById(fontSizeItems[0].Id)
+          .update({
+            value: settings.fontSize.toString()
+          });
+      } else {
+        // Create a new item
+        await sp.web.lists.getByTitle("navbarcrud").items
+          .add({
+            Title: 'font_size',
+            value: settings.fontSize.toString()
+          });
+      }
+      
+      console.log('Settings saved to SharePoint list successfully!');
+    } catch (error) {
+      console.error('Error saving settings to SharePoint list:', error);
+      throw error;
+    }
   }
 
   /**
@@ -157,9 +261,9 @@ export class SettingsDialogContent extends React.Component<ISettingsDialogProps,
    * Handles preview button click
    */
   private handlePrevClick = (): void => {
-    console.log('Preview button clicked');
-    // Add your Preview step logic here
-    alert('Going back to Preview step');
+    const { color, fontSize } = this.state;
+    this.applySettings(color, fontSize);
+    this.showNotification('Preview applied! Click Save to keep these settings.', MessageBarType.info);
   }
 
   /**
@@ -178,36 +282,46 @@ export class SettingsDialogContent extends React.Component<ISettingsDialogProps,
         document.head.appendChild(styleEl);
       }
       
-      // Apply styles to various SharePoint header elements
+      // Apply styles specifically to ShyHeader as required
       const cssRules = `
-        /* Site Header Background Color */
-        .ms-CommandBar {
+        /* Shy Header Background Color */
+        [data-automationid="ShyHeader"] {
           background-color: ${color} !important;
         }
         
-        /* Adjust all navigation links and icons in the header */
-        .ms-CommandBar a,
-        .ms-CommandBar button,
-        .ms-CommandBar span,
-        .ms-CommandBar div,
-        [data-navigationcomponent="SiteHeader"],
-        [data-automationid="SiteHeader"] * {
+        /* Also target SuiteNav for complete header styling */
+        .ms-FocusZone.ms-siteHeader-siteNav {
+          background-color: ${color} !important;
+        }
+        
+        /* Adjust font size of navigation links */
+        [data-automationid="ShyHeader"] .ms-HorizontalNavItem-linkText,
+        [data-automationid="ShyHeader"] span,
+        [data-automationid="ShyHeader"] a,
+        [data-automationid="ShyHeader"] button {
           font-size: ${fontSize}px !important;
         }
         
-        /* Ensure content in the header is visible against the background color */
-        .ms-CommandBar a,
-        .ms-CommandBar button,
-        .ms-CommandBar span,
-        .ms-CommandBar div,
-        [data-navigationcomponent="SiteHeader"] a,
-        [data-automationid="SiteHeader"] button {
+        /* Ensure content is visible against the background color */
+        [data-automationid="ShyHeader"] .ms-HorizontalNavItem-linkText,
+        [data-automationid="ShyHeader"] span,
+        [data-automationid="ShyHeader"] a,
+        [data-automationid="ShyHeader"] button,
+        .ms-FocusZone.ms-siteHeader-siteNav span,
+        .ms-FocusZone.ms-siteHeader-siteNav a {
           color: ${this.getTextColor(color)} !important;
         }
         
         /* Adjust the header logo size proportionally */
-        [data-navigationcomponent="SiteHeader"] img {
+        [data-automationid="ShyHeader"] img,
+        .ms-siteHeader-siteLogo img {
           height: ${fontSize * 1.5}px !important;
+        }
+        
+        /* Make settings button always visible */
+        #monarch360SettingsBtn {
+          background-color: ${color} !important;
+          color: ${this.getTextColor(color)} !important;
         }
       `;
       
@@ -253,7 +367,7 @@ export class SettingsDialogContent extends React.Component<ISettingsDialogProps,
       // Set saving state
       this.setState({ isSaving: true });
       
-      // Save settings
+      // Save settings to SharePoint list
       const settings: IUserSettings = {
         backgroundColor: color,
         fontSize: fontSize
@@ -265,7 +379,7 @@ export class SettingsDialogContent extends React.Component<ISettingsDialogProps,
       this.applySettings(color, fontSize);
       
       // Show success notification
-      this.showNotification('Settings saved successfully!', MessageBarType.success);
+      this.showNotification('Settings saved successfully to SharePoint list!', MessageBarType.success);
       
       // Clear saving state
       this.setState({ isSaving: false });
@@ -275,9 +389,9 @@ export class SettingsDialogContent extends React.Component<ISettingsDialogProps,
         this.closeDialog();
       }, 1500);
     } catch (error) {
-      console.error('Error saving settings:', error);
+      console.error('Error saving settings to SharePoint list:', error);
       this.setState({ isSaving: false });
-      this.showNotification('Error saving settings', MessageBarType.error);
+      this.showNotification('Error saving settings to SharePoint list', MessageBarType.error);
     }
   }
 
@@ -315,7 +429,7 @@ export class SettingsDialogContent extends React.Component<ISettingsDialogProps,
     
     const dialogContentProps: IDialogContentProps = {
       type: DialogType.normal,
-      title: 'Site Settings',
+      title: 'ShyHeader Settings',
       closeButtonAriaLabel: 'Close'
     };
 
@@ -365,7 +479,7 @@ export class SettingsDialogContent extends React.Component<ISettingsDialogProps,
           <>
             <Stack tokens={stackTokens}>
               <StackItem>
-                <Label>Background Color:</Label>
+                <Label>ShyHeader Background Color:</Label>
                 <Stack horizontal tokens={{ childrenGap: 10 }}>
                   <StackItem>
                     <input 
@@ -438,11 +552,15 @@ export class SettingsDialogContent extends React.Component<ISettingsDialogProps,
  */
 export class SettingsDialog {
   private static domElement: HTMLDivElement | null = null;
+  private static context: ApplicationCustomizerContext | undefined;
 
   /**
    * Shows the settings dialog
    */
-  public static show(): void {
+  public static show(context?: ApplicationCustomizerContext): void {
+    // Save context for SharePoint operations
+    this.context = context;
+    
     // Create container div if it doesn't exist
     if (!this.domElement) {
       this.domElement = document.createElement('div');
@@ -459,7 +577,7 @@ export class SettingsDialog {
     // Render the dialog
     if (this.domElement) {
       ReactDOM.render(
-        <SettingsDialogContent onDismiss={onDismiss} />,
+        <SettingsDialogContent onDismiss={onDismiss} context={this.context} />,
         this.domElement
       );
     }
