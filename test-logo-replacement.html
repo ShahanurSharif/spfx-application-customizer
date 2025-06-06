@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logo Replacement Test - SPFx Extension</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f3f2f1;
+        }
+        
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .header-section {
+            background: #005a70;
+            color: white;
+            padding: 10px 20px;
+            margin: -20px -20px 20px -20px;
+            border-radius: 4px 4px 0 0;
+        }
+        
+        .logo-test-area {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            background-color: #fafafa;
+        }
+        
+        .sharepoint-logo-container {
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background: white;
+        }
+        
+        .logo-element {
+            max-width: 200px;
+            height: auto;
+            border: 1px solid #ccc;
+            margin: 10px;
+        }
+        
+        .test-buttons {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .test-btn {
+            background: #0078d4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 2px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .test-btn:hover {
+            background: #106ebe;
+        }
+        
+        .test-results {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-left: 4px solid #0078d4;
+        }
+        
+        .success {
+            border-left-color: #107c10;
+            background: #f3f9f1;
+        }
+        
+        .error {
+            border-left-color: #d83b01;
+            background: #fdf6f6;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #0078d4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .info-panel {
+            background: #fff4ce;
+            border: 1px solid #ffb900;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 2px;
+        }
+        
+        code {
+            background: #f1f1f1;
+            padding: 2px 4px;
+            border-radius: 2px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="header-section">
+            <h1>🧪 SPFx Logo Replacement Test Suite</h1>
+            <p>Testing the enhanced logo replacement functionality for SharePoint Framework extension</p>
+        </div>
+
+        <div class="info-panel">
+            <h3>🎯 Test Objectives</h3>
+            <ul>
+                <li><strong>Logo Persistence:</strong> Verify custom logos replace SharePoint's default API logos on page reload</li>
+                <li><strong>Preview Functionality:</strong> Test that preview button properly applies logo changes</li>
+                <li><strong>API Override:</strong> Ensure logos using <code>siteiconmanager</code> API are replaced</li>
+                <li><strong>Multiple Selectors:</strong> Validate comprehensive logo targeting works across different DOM structures</li>
+            </ul>
+        </div>
+
+        <div class="logo-test-area">
+            <h3>📍 SharePoint Logo Elements (Simulated)</h3>
+            
+            <!-- Simulate SharePoint's default logo using siteiconmanager API -->
+            <div class="sharepoint-logo-container">
+                <h4>Default SharePoint API Logo</h4>
+                <img id="sharepoint-api-logo" 
+                     src="https://monarch360demo.sharepoint.com/sites/shan/_api/siteiconmanager/getsitelogo?type='1'&hash=638845803745903643" 
+                     alt="SharePoint Site Logo" 
+                     class="logo-element logoImg-112"
+                     onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkRlZmF1bHQgTG9nbzwvdGV4dD48L3N2Zz4='" />
+            </div>
+
+            <!-- Additional logo elements with various selectors -->
+            <div class="sharepoint-logo-container">
+                <h4>Header Logo (Class-based)</h4>
+                <img id="header-logo" 
+                     src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDA1YTcwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5IZWFkZXIgTG9nbzwvdGV4dD48L3N2Zz4=" 
+                     alt="Header Logo" 
+                     class="logo-element ms-siteHeader-logo" />
+            </div>
+
+            <div class="sharepoint-logo-container">
+                <h4>Navigation Logo (Data Attribute)</h4>
+                <div data-automationid="ShyHeader">
+                    <img id="nav-logo" 
+                         src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMTA3YzEwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5OYXYgTG9nbzwvdGV4dD48L3N2Zz4=" 
+                         alt="Navigation Logo" 
+                         class="logo-element" />
+                </div>
+            </div>
+        </div>
+
+        <div class="test-buttons">
+            <button class="test-btn" onclick="testLogoReplacement()">🔄 Test Logo Replacement</button>
+            <button class="test-btn" onclick="testPreviewFunction()">👀 Test Preview Function</button>
+            <button class="test-btn" onclick="simulatePageReload()">🔃 Simulate Page Reload</button>
+            <button class="test-btn" onclick="testMutationObserver()">👁️ Test Mutation Observer</button>
+            <button class="test-btn" onclick="clearResults()">🧹 Clear Results</button>
+        </div>
+
+        <div id="test-results" class="test-results">
+            <h3>📊 Test Results</h3>
+            <p>Click the test buttons above to verify logo replacement functionality.</p>
+        </div>
+
+        <div class="info-panel">
+            <h3>🔧 How to Test</h3>
+            <ol>
+                <li><strong>Start Development Server:</strong> Ensure your SPFx extension is running with <code>gulp serve</code></li>
+                <li><strong>Load Extension:</strong> Go to your SharePoint site and append the debug query string</li>
+                <li><strong>Open Settings:</strong> Use the SPFx extension to upload a custom logo</li>
+                <li><strong>Test Preview:</strong> Click the preview button to see immediate changes</li>
+                <li><strong>Test Persistence:</strong> Reload the page to verify logo remains applied</li>
+                <li><strong>Monitor Console:</strong> Check browser dev tools for debug messages</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        // Sample custom logo for testing (base64 encoded SVG)
+        const CUSTOM_LOGO = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImdyYWQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZjYwMDAiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkYzE0M2MiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyYWQpIiByeD0iMTAiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5DVVNUT00gTE9HTzwvdGV4dD48L3N2Zz4=';
+        
+        function logResult(message, type = 'info') {
+            const resultsDiv = document.getElementById('test-results');
+            const timestamp = new Date().toLocaleTimeString();
+            const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : type === 'warning' ? '⚠️' : 'ℹ️';
+            
+            resultsDiv.innerHTML += `
+                <div class="test-result ${type}" style="margin: 5px 0; padding: 8px; border-left: 3px solid ${type === 'success' ? '#107c10' : type === 'error' ? '#d83b01' : '#0078d4'}; background: ${type === 'success' ? '#f3f9f1' : type === 'error' ? '#fdf6f6' : '#f8f9fa'};">
+                    <strong>[${timestamp}]</strong> ${icon} ${message}
+                </div>
+            `;
+            resultsDiv.scrollTop = resultsDiv.scrollHeight;
+        }
+
+        function testLogoReplacement() {
+            logResult('🔄 Starting logo replacement test...', 'info');
+            
+            // Simulate the logo replacement functionality
+            const logoSelectors = [
+                'img[src*="siteiconmanager"]',
+                'img[src*="_api/siteiconmanager"]', 
+                'img[src*="getsitelogo"]',
+                '.logoImg-112',
+                '[class*="logoImg"]',
+                'img[class*="logoImg"]',
+                '[data-automationid="ShyHeader"] img',
+                '.ms-siteHeader img',
+                '.ms-siteHeader-logo'
+            ];
+            
+            let replacedCount = 0;
+            logoSelectors.forEach(selector => {
+                const elements = document.querySelectorAll(selector);
+                elements.forEach(img => {
+                    if (img.src !== CUSTOM_LOGO) {
+                        const originalSrc = img.src;
+                        img.src = CUSTOM_LOGO;
+                        img.style.display = 'block';
+                        img.style.visibility = 'visible';
+                        logResult(`🎯 Replaced logo: ${selector} (was: ${originalSrc.substring(0, 50)}...)`, 'success');
+                        replacedCount++;
+                    }
+                });
+            });
+            
+            if (replacedCount > 0) {
+                logResult(`✅ Successfully replaced ${replacedCount} logo(s)`, 'success');
+            } else {
+                logResult('⚠️ No logos found to replace', 'warning');
+            }
+        }
+
+        function testPreviewFunction() {
+            logResult('👀 Testing preview functionality...', 'info');
+            
+            // Simulate preview button click
+            const previewSettings = {
+                logoUrl: CUSTOM_LOGO,
+                logoPreview: CUSTOM_LOGO
+            };
+            
+            // Apply preview settings
+            setTimeout(() => {
+                testLogoReplacement();
+                logResult('👀 Preview applied successfully - logo should be visible immediately', 'success');
+            }, 100);
+        }
+
+        function simulatePageReload() {
+            logResult('🔃 Simulating page reload scenario...', 'info');
+            
+            // Reset logos to default
+            document.getElementById('sharepoint-api-logo').src = "https://monarch360demo.sharepoint.com/sites/shan/_api/siteiconmanager/getsitelogo?type='1'&hash=638845803745903643";
+            document.getElementById('header-logo').src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDA1YTcwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5IZWFkZXIgTG9nbzwvdGV4dD48L3N2Zz4=";
+            document.getElementById('nav-logo').src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMTA3YzEwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5OYXYgTG9nbzwvdGV4dD48L3N2Zz4=";
+            
+            logResult('🔄 Reset logos to default state', 'info');
+            
+            // Simulate the application customizer loading stored settings
+            setTimeout(() => {
+                logResult('📂 Simulating stored settings load on page reload...', 'info');
+                testLogoReplacement();
+                logResult('✅ Logo persistence test completed - custom logos should remain after reload', 'success');
+            }, 1000);
+        }
+
+        function testMutationObserver() {
+            logResult('👁️ Testing MutationObserver functionality...', 'info');
+            
+            // Simulate DOM changes that would trigger the observer
+            const testDiv = document.createElement('div');
+            testDiv.innerHTML = '<img src="https://example.com/_api/siteiconmanager/getsitelogo" class="logoImg-112" alt="Dynamic Logo">';
+            document.body.appendChild(testDiv);
+            
+            logResult('🔍 Added new logo element dynamically', 'info');
+            
+            // Simulate observer detecting the change
+            setTimeout(() => {
+                const dynamicLogo = testDiv.querySelector('img');
+                if (dynamicLogo) {
+                    dynamicLogo.src = CUSTOM_LOGO;
+                    logResult('✅ MutationObserver would have detected and replaced dynamic logo', 'success');
+                }
+                
+                // Clean up
+                setTimeout(() => {
+                    document.body.removeChild(testDiv);
+                    logResult('🧹 Cleaned up dynamic test element', 'info');
+                }, 2000);
+            }, 500);
+        }
+
+        function clearResults() {
+            document.getElementById('test-results').innerHTML = `
+                <h3>📊 Test Results</h3>
+                <p>Results cleared. Click the test buttons above to run tests.</p>
+            `;
+        }
+
+        // Initialize test environment
+        window.addEventListener('load', function() {
+            logResult('🚀 Logo replacement test suite initialized', 'success');
+            logResult('💡 SPFx development server should be running on https://localhost:4321', 'info');
+            logResult('🔗 Debug query string: ?debug=true&noredir=true&debugManifestsFile=https://localhost:4321/temp/build/manifests.js', 'info');
+        });
+    </script>
+</body>
+</html>

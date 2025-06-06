@@ -56,6 +56,7 @@ try {
     $existingItems = Get-PnPListItem -List $ListName
     $backgroundColorItem = $existingItems | Where-Object { $_.FieldValues.Title -eq "background_color" }
     $fontSizeItem = $existingItems | Where-Object { $_.FieldValues.Title -eq "font_size" }
+    $logoItem = $existingItems | Where-Object { $_.FieldValues.Title -eq "logo" }
     
     # Add background_color item if it doesn't exist
     if (-not $backgroundColorItem) {
@@ -79,6 +80,18 @@ try {
         Write-Host "✅ Font size item added (default: 16px)" -ForegroundColor Green
     } else {
         Write-Host "✅ Font size item already exists: $($fontSizeItem.FieldValues.value)px" -ForegroundColor Green
+    }
+    
+    # Add logo item if it doesn't exist
+    if (-not $logoItem) {
+        Write-Host "🖼️ Adding 'logo' item..." -ForegroundColor Blue
+        Add-PnPListItem -List $ListName -Values @{
+            "Title" = "logo"
+            "value" = ""
+        }
+        Write-Host "✅ Logo item added (ready for image upload)" -ForegroundColor Green
+    } else {
+        Write-Host "✅ Logo item already exists" -ForegroundColor Green
     }
     
     Write-Host ""
